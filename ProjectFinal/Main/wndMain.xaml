@@ -27,7 +27,7 @@
         <TextBox x:Name="invoiceCost_txtbox" HorizontalAlignment="Left" Height="23" Margin="581,28,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
         <ComboBox x:Name="items_cbo" HorizontalAlignment="Left" Margin="64,85,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="items_cbo_SelectionChanged"/>
         <Label x:Name="items_lbl" Content="Items:" HorizontalAlignment="Right" Margin="0,85,726,0" VerticalAlignment="Top" RenderTransformOrigin="1.083,0.103"/>
-        <Button x:Name="addItem_button" Content="Add Item" HorizontalAlignment="Left" Margin="423,85,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="addItem_button" Content="Add Item" HorizontalAlignment="Left" Margin="423,85,0,0" VerticalAlignment="Top" Width="75" Click="addItem_button_Click"/>
         <TextBox x:Name="itemCost_txtbox" HorizontalAlignment="Left" Height="23" Margin="279,84,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <Label x:Name="itemCost_lbl" Content="ItemCost:" HorizontalAlignment="Left" Margin="221,85,0,0" VerticalAlignment="Top"/>
         <Button x:Name="testEnterInvoice" Content="Test - Enter Invoice Num" HorizontalAlignment="Left" Margin="624,85,0,0" VerticalAlignment="Top" Width="155" Click="testEnterInvoice_Click"/>

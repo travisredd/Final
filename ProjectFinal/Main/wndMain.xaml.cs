@@ -46,6 +46,12 @@ namespace Main
         List<clsItemDesc> newLstItemDesc;
 
 
+
+        List<string> lstInvoiceItems;
+
+
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -78,10 +84,12 @@ namespace Main
 
             newLstItemDesc = new List<clsItemDesc>();
 
+            //^^^^^^^^Might not need the new list
 
 
-            
 
+
+            lstInvoiceItems = new List<string>();
 
 
 
@@ -349,7 +357,7 @@ namespace Main
 
         private void testEnterInvoice_Click(object sender, RoutedEventArgs e)
         {
-            string s;
+            //string s;
             //testing - automatically select an invoice... 
 
             MainLogic.GetInvoice(5000);
@@ -366,6 +374,19 @@ namespace Main
             {
                 items_cbo.Items.Add(MainLogic.lstItemDesc[i].sItemDesc);
             }
+        }
+
+        private void addItem_button_Click(object sender, RoutedEventArgs e)
+        {
+            //add to the list - maybe create a list.
+
+            lstInvoiceItems.Add(items_cbo.SelectedItem.ToString());
+
+
+
+            dataGridView1.ItemsSource = lstInvoiceItems;
+
+            dataGridView1.Items.Refresh();
         }
     }
 }
