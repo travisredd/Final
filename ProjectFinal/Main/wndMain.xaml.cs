@@ -89,7 +89,7 @@ namespace Main
 
 
 
-            lstInvoiceItems = new List<string>();
+            lstInvoiceItems = new List<clsInvoiceItems>();
 
 
 
@@ -380,7 +380,7 @@ namespace Main
         {
             //add to the list - maybe create a list.
 
-            lstInvoiceItems.Add(items_cbo.SelectedItem.ToString());
+          //  lstInvoiceItems.Add(items_cbo.SelectedItem);
 
 
 
