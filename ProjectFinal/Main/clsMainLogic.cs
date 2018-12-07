@@ -30,7 +30,7 @@ namespace Main
         /// <summary>
         /// 
         /// </summary>
-        public List<clsItemDesc> clsItemDescs;
+        public List<clsItemDesc> lstItemDesc;
 
 
         /// <summary>
@@ -106,13 +106,11 @@ namespace Main
 
 
 
-        public string CreateRow()
+        public void CreateRow()
         {//idk
             DataRow DR = ds.Tables[0].NewRow();
-           // DR[0] = Convert.ToString((ds.Tables[0].Rows.Count + 1));
-            return DR.ToString();
-
-
+            DR[0] = Convert.ToString((ds.Tables[0].Rows.Count + 1));
+ 
         }
 
 
@@ -124,13 +122,13 @@ namespace Main
         /// List to GetInvoice() data
         /// </summary>
         /// <returns></returns>
-        public List<clsInvoice> GetInvoice()
+        public List<clsInvoice> GetInvoice(int n)
         {
             lstInvoice = new List<clsInvoice>();
 
             db = new clsDataAccess();
 
-            ds = db.ExecuteSQLStatement(MainSQL.LoadInvoiceData(), ref iRet);
+            ds = db.ExecuteSQLStatement(MainSQL.LoadInvoiceData(n), ref iRet);
 
             for (int i = 0; i < iRet; i++)
             {
@@ -195,25 +193,25 @@ namespace Main
         /// List to get GetItemsDesc() data
         /// </summary>
         /// <returns></returns>
-        public List<clsItemDesc> GetItemDesc(string s)
+        public List<clsItemDesc> GetItemDesc()
         {
-            List<clsItemDesc> lstInvoice = new List<clsItemDesc>();
+            lstItemDesc = new List<clsItemDesc>();
 
             db = new clsDataAccess();
 
-            ds = db.ExecuteSQLStatement(MainSQL.LoadItemDescData(s), ref iRet);
+            ds = db.ExecuteSQLStatement(MainSQL.LoadItemDescData(), ref iRet);
 
             for (int i = 0; i < iRet; i++)
             {
 
-                lstInvoice.Add(new clsItemDesc
+                lstItemDesc.Add(new clsItemDesc
                 {
                     sItemCode = ds.Tables[0].Rows[i]["ItemCode"].ToString(),
                     sItemDesc = ds.Tables[0].Rows[i]["ItemDesc"].ToString(),
                     sCost = ds.Tables[0].Rows[i]["Cost"].ToString()
                 });
             }
-            return lstInvoice;
+            return lstItemDesc;
         }
         #endregion
     }

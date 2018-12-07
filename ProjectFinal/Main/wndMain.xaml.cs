@@ -49,7 +49,7 @@ namespace Main
         /// <summary>
         /// 
         /// </summary>
-        bool bIsDeleting;
+        //bool bIsDeleting;
 
 
 
@@ -78,16 +78,34 @@ namespace Main
 
             newLstItemDesc = new List<clsItemDesc>();
 
+
+
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            /*
             //get the lstInvoice from MainLogic and pass it into our new list called newLstInvoice
             newLstInvoice = MainLogic.GetInvoice();
 
             //bind the data from our new list onto our datagrid called dataGridView
             dataGridView1.ItemsSource = newLstInvoice;
-
-            /*need to add button columns*/
-
+            */
             create_btn.IsEnabled = false;
-            edit_btn.IsEnabled = false;
+            editItem_btn.IsEnabled = false;
 
 
         }
@@ -113,6 +131,28 @@ namespace Main
         /// <param name="e"></param>
         private void delete_btn_Click(object sender, RoutedEventArgs e)
         {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            /*
             if (dataGridView1.SelectedIndex < newLstInvoice.Count && dataGridView1.SelectedItem != null)
             {
                 //create and instanitate a new Invoice object 
@@ -144,11 +184,33 @@ namespace Main
                 //refresh items in the datagrid called dataGridView
                 dataGridView1.Items.Refresh();
             }
+            */
         }
         #endregion
 
         private void dataGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            /*
             newLstLineItems.Clear();
             dataGridView2.Items.Refresh();
             //checks to make sure that we cannot select a row without invoice data. 
@@ -165,6 +227,7 @@ namespace Main
                 dataGridView2.Columns[1].Visibility = System.Windows.Visibility.Hidden;
 
             }
+            */
 
         }
 
@@ -174,6 +237,31 @@ namespace Main
 
         private void DataGridView2_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            /*
             newLstItemDesc.Clear();
             dataGridView3.Items.Refresh();
             if (dataGridView2.SelectedIndex < newLstLineItems.Count && bIsDeleting == false)
@@ -191,6 +279,7 @@ namespace Main
 
                 dataGridView3.ItemsSource = newLstItemDesc;
             }
+            */
 
         }
 
@@ -204,12 +293,19 @@ namespace Main
         /// <param name="e"></param>
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            //open "search" window. 
 
-            //MessageBox.Show("Opens SEARCH window");
+
+
+            //open "search" window. 
+            
+            this.Hide();
 
             MainWindow searchWindow = new MainWindow();
             searchWindow.ShowDialog();
+
+            this.Show();
+
+             
         }
         #endregion
         #region Item - MenuItem_Click()
@@ -220,20 +316,56 @@ namespace Main
         /// <param name="e"></param>
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
         {
-            //open "items" window. 
-
-            //MessageBox.Show("Opens ITEMS window");
+            this.Hide();
 
             wndItems items = new wndItems();
             items.ShowDialog();
+
+            this.Show();
         }
 
         #endregion
 
         private void Create_btn_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(MainLogic.CreateRow());
-            dataGridView1.Items.Refresh();
+            MainLogic.CreateRow();
+
+            //user may enter data pertaining to that invoice. 
+            //auto generated number from the database is given for the invoice number. 
+            //invoice date will be assigned by the user. - use date control to make life easier. 
+            //different items will be entered by the user. Items will be selected from a dropdown box and the cost for that item will be put into a read only textbox which is default cost of the item.
+            //once item is selected user can add that item, as many items as needed should be able to add to invoice. 
+            //all items entered should be displayed in a list on something like a datagrid, items may be deleted from that list, a running total of cost will be displayed as items are added or deleted. 
+            //save invoice, lock data in invoice for viewing only, save all data to database
+            //user may choose to edit invoice or delete.
+
+
+        }
+
+        private void items_cbo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            itemCost_txtbox.Text = MainLogic.lstItemDesc[items_cbo.SelectedIndex].sCost;
+        }
+
+        private void testEnterInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            string s;
+            //testing - automatically select an invoice... 
+
+            MainLogic.GetInvoice(5000);
+
+            invoiceNum_txtbox.Text = MainLogic.lstInvoice[0].iInvoiceNum.ToString();
+
+            invoiceData_txtbox.Text = MainLogic.lstInvoice[0].sInvoiceDate.ToString();
+
+            invoiceCost_txtbox.Text = MainLogic.lstInvoice[0].sTotalCost.ToString();
+
+            MainLogic.GetItemDesc();
+
+            for (int i = 0; i < MainLogic.lstItemDesc.Count; i++)
+            {
+                items_cbo.Items.Add(MainLogic.lstItemDesc[i].sItemDesc);
+            }
         }
     }
 }

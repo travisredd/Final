@@ -67,9 +67,9 @@ namespace Main
         /// Returns sql statement to get Invoice
         /// </summary>
         /// <returns></returns>
-        public string LoadInvoiceData()
+        public string LoadInvoiceData(int n)
         {
-            sInvoiceSQL = "SELECT * FROM Invoices";
+            sInvoiceSQL = "SELECT * FROM Invoices WHERE InvoiceNum =" + n;
             return sInvoiceSQL; 
         }
         #endregion
@@ -95,11 +95,11 @@ namespace Main
         /// Returns sql statement to get all ItemDesc
         /// </summary>
         /// <returns></returns>
-        public string LoadItemDescData(string s)
+        public string LoadItemDescData()
         {
-            
 
-            sItemDescSQL = "SELECT * FROM ItemDesc WHERE ItemCode = " + "'" + s + "'";
+
+            sItemDescSQL = "SELECT * FROM ItemDesc;";
             return sItemDescSQL;
         }
         #endregion
