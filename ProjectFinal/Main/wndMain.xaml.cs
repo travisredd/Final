@@ -47,7 +47,7 @@ namespace Main
 
 
 
-        List<string> lstInvoiceItems;
+        List<clsInvoiceItems> lstInvoiceItems;
 
         
 
