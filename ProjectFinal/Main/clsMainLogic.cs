@@ -32,22 +32,20 @@ namespace Main
         /// </summary>
         public List<clsItemDesc> lstItemDesc;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<clsItemDesc> lstInvoiceDesc;
 
         /// <summary>
         /// Create clsDataAccess object reference
         /// </summary>
         clsDataAccess db;
+
         /// <summary>
         /// Create DataSet object reference to hold the data
         /// </summary>
         public DataSet ds;
-
-
-       
-
-
-
-
 
 
         #endregion
@@ -58,22 +56,15 @@ namespace Main
         /// </summary>
         public clsMainLogic()
         {
+
             MainSQL = new clsMainSQL();
 
             ds = new DataSet();
 
-            iRet = 0; 
-
-
-
-
-
-
+            iRet = 0;
 
         }
         #endregion
-
-
 
 
         /// <summary>
@@ -83,11 +74,8 @@ namespace Main
         /// <returns></returns>
         public int DeleteLineItemSQL(int n)
         {
-            return db.ExecuteNonQuery(MainSQL.DeleteLineItemsSQL(n)); 
+            return db.ExecuteNonQuery(MainSQL.DeleteLineItemsSQL(n));
         }
-
-
-
 
 
         /// <summary>
@@ -97,24 +85,21 @@ namespace Main
         /// <returns></returns>
         public int DeleteInvoiceSQL(int n)
         {
-            
+
             return db.ExecuteNonQuery(MainSQL.DeleteInvoiceSQL(n));
         }
 
 
-
-
-
-
+        /// <summary>
+        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// </summary>
         public void CreateRow()
         {//idk
             DataRow DR = ds.Tables[0].NewRow();
             DR[0] = Convert.ToString((ds.Tables[0].Rows.Count + 1));
- 
+
         }
-
-
-
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
         #region List<clsInvoice> GetInvoice()
@@ -144,10 +129,35 @@ namespace Main
         }
         #endregion
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public List<clsItemDesc> GetInvoiceItemDesc(int n)///////////////////////////////////////////////////////////////////////////////////////////////////
+        {
 
 
+            lstInvoiceDesc = new List<clsItemDesc>();
 
+            db = new clsDataAccess();
 
+            ds = db.ExecuteSQLStatement(MainSQL.GetDetailsOfInvoice(n), ref iRet);
+
+            for (int i = 0; i < iRet; i++)
+            {
+
+                lstInvoiceDesc.Add(new clsItemDesc
+                {
+
+                    
+                    sItemDesc = ds.Tables[0].Rows[i]["ItemDesc"].ToString(),
+                    sCost = ds.Tables[0].Rows[i]["Cost"].ToString()
+
+                });
+            }
+            return lstInvoiceDesc;
+        }
 
 
         #region List<clsLineItems> GetLineItems()
@@ -160,7 +170,7 @@ namespace Main
             List<clsLineItems> lstLineItems = new List<clsLineItems>();
 
             db = new clsDataAccess();
-    
+
             ds = db.ExecuteSQLStatement(MainSQL.LoadLineItems(n), ref iRet);
 
             for (int i = 0; i < iRet; i++)
@@ -187,7 +197,6 @@ namespace Main
         #endregion
 
 
-
         #region List<clsItemDesc> GetItemDesc()
         /// <summary>
         /// List to get GetItemsDesc() data
@@ -206,7 +215,7 @@ namespace Main
 
                 lstItemDesc.Add(new clsItemDesc
                 {
-                    sItemCode = ds.Tables[0].Rows[i]["ItemCode"].ToString(),
+                    
                     sItemDesc = ds.Tables[0].Rows[i]["ItemDesc"].ToString(),
                     sCost = ds.Tables[0].Rows[i]["Cost"].ToString()
                 });
@@ -214,5 +223,6 @@ namespace Main
             return lstItemDesc;
         }
         #endregion
+    
     }
 }

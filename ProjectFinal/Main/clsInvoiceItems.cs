@@ -8,7 +8,15 @@ namespace Main
 {
     public class clsInvoiceItems
     {
-        public string sItems { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string sItemDesc { get; set; }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
         public string sCost { get; set; }
     }
 }
