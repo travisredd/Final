@@ -35,7 +35,10 @@ namespace Main
         /// </summary>
         string sDeleteLineItemSQL;
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        string sGetDetailsOfInvoiceSQL;
 
 
         #endregion
@@ -117,6 +120,9 @@ namespace Main
             return sDeleteInvoiceSQL;
         }
 
+
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -132,6 +138,17 @@ namespace Main
         //create SQL
 
 
+
+        public string GetDetailsOfInvoice(int n)
+        {
+            //need to query out all the details of the invoice passed in. 
+            sGetDetailsOfInvoiceSQL = " SELECT ItemDesc.ItemDesc, ItemDesc.Cost" +
+                                      " FROM ((ItemDesc " +
+                                      " INNER JOIN LineItems ON LineItems.ItemCode = ItemDesc.ItemCode) " +
+                                      " INNER JOIN Invoices ON Invoices.InvoiceNum = LineItems.InvoiceNum) " +
+                                      " WHERE (Invoices.InvoiceNum = " + n + ")";
+            return sGetDetailsOfInvoiceSQL;
+        }
 
 
 
