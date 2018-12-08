@@ -33,17 +33,15 @@ namespace ProjectFinal.Items
         /// Orders and names output columns as Code, Cost, Description
         /// </summary>
         /// <returns>Returns a DataSet which contains the entire ItemDesc table</returns>
-        public static DataSet itemList()
+        public static DataSet itemList(ref int iRet)
         {
-            int rowsReturned = 0;
-
             try
             {
                 DataSet ds = new DataSet();
 
                 ds = db.ExecuteSQLStatement("SELECT ItemCode AS Code, Cost, ItemDesc AS Description " +
                                             "FROM ItemDesc",
-                                            ref rowsReturned);
+                                            ref iRet);
 
                 return ds;
             }
@@ -52,8 +50,7 @@ namespace ProjectFinal.Items
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
-
-
+        
         /// <summary>
         /// addItem()
         /// 
@@ -63,13 +60,13 @@ namespace ProjectFinal.Items
         /// <param name="cost">The cost of the item.</param>
         /// <param name="description">The description of the item.</param>
         /// <returns>An integer that indicates how many lines were added to the database. A value different than 1 indicates an error</returns>
-        public static int addItem(string cost, string description)
+        public static int addItem(string cost, string description, string code)
         {
             // Note: These values will be validated in the calling method inside clsItemLogic.
             try
             {
-                return db.ExecuteNonQuery("INSERT INTO ItemDesc (Cost, ItemDesc) " +
-                                          "VALUES (" + cost + ", " + description + ")");
+                return db.ExecuteNonQuery("INSERT INTO ItemDesc (ItemCode, Cost, ItemDesc) " +
+                                          "VALUES ('" + code + "', '" + cost + "', '" + description + "')");
             }
             catch (Exception ex)
             {
@@ -92,10 +89,10 @@ namespace ProjectFinal.Items
             // Note: These values will be validated in the calling method inside clsItemLogic.
             try
             {
-                return db.ExecuteNonQuery("UPDATE ItemDesc" +
+                return db.ExecuteNonQuery("UPDATE ItemDesc " +
                                           "SET Cost = " + cost +
-                                          ", ItemDesc = " + description +
-                                          "WHERE code = " + code);
+                                          ", ItemDesc = '" + description +
+                                          "' WHERE ItemCode = '" + code + "'");
             }
             catch (Exception ex)
             {
@@ -118,7 +115,7 @@ namespace ProjectFinal.Items
             {
                 invoiceList = db.ExecuteSQLStatement("SELECT DISTINCT InvoiceNum " +
                                                      "FROM LineItems " +
-                                                     "WHERE ItemCode = " + itemToCheck.Code,
+                                                     "WHERE ItemCode = '" + itemToCheck.Code + "'",
                                                      ref iRetVal);
             }
             catch (Exception ex)
@@ -140,7 +137,7 @@ namespace ProjectFinal.Items
             {
                 return db.ExecuteNonQuery("DELETE * " +
                                           "FROM ItemDesc " +
-                                          "WHERE ItemCode = " + deleteThis.Code);
+                                          "WHERE ItemCode = '" + deleteThis.Code + "'");
             }
             catch (Exception ex)
             {
@@ -148,5 +145,22 @@ namespace ProjectFinal.Items
             }
         }
 
+        /// <summary>
+        /// Queries the database for all item codes from the database
+        /// </summary>
+        /// <param name="iRet">Referenced integer that will be changed to the number of rows returned from the database</param>
+        /// <returns>A dataset containing all itemcodes from the database</returns>
+        public static DataSet getItemCodes(ref int iRet)
+        {
+            try
+            {
+                return db.ExecuteSQLStatement("SELECT ItemCode FROM ItemDesc", ref iRet);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+
+        }
     }
 }

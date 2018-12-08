@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,19 +23,31 @@ namespace ProjectFinal.Items
     public partial class wndItems : Window
     {
         /// <summary>
-        /// An observable collection of Items pulled from the database.
+        /// A DataTable of Items pulled from the database.
         /// </summary>
-        private ObservableCollection<Item> itemList = new ObservableCollection<Item>(); 
+        private DataTable itemList = new DataTable();
 
         /// <summary>
         /// Default Constructor
         /// </summary>
         public wndItems()
         {
-            InitializeComponent();
+            try
+            { 
+                InitializeComponent();
 
-            // Attach the collection to the datagrid "listItemDisplay"
-            listItemDisplay.ItemsSource = itemList;
+                DataColumn code = new DataColumn("Code", typeof(string));
+                DataColumn cost = new DataColumn("Cost", typeof(string));
+                DataColumn description = new DataColumn("Description", typeof(string));
+
+                itemList.Columns.Add(code);
+                itemList.Columns.Add(cost);
+                itemList.Columns.Add(description);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -43,8 +57,18 @@ namespace ProjectFinal.Items
         /// </summary>
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            // Call clsItemsLogic.getItemList() to populate itemList when the window loads.
-            itemList = clsItemsLogic.getItemList();
+            try
+            { 
+                // Call clsItemsLogic.getItemList() to populate itemList when the window loads.
+                clsItemsLogic.getItemList(ref itemList);
+
+                // Bind itemList to the display
+                listItemDisplay.ItemsSource = itemList.DefaultView;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
         
         /// <summary>
@@ -59,12 +83,54 @@ namespace ProjectFinal.Items
         /// </summary>
         private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // TODO
-            // Update the text fields in the edit item area
-            // Allow tab stop for edit item text fields if still disabled
-            // Disable isReadOnly for edit item text fields if still enabled
-            // Enable Edit Item button
-            // Enable Delete Item button
+            try
+            {
+                // Check that the newly selected row is not null!
+                if (((DataGrid)(sender)).SelectedItem != null)
+                {
+                    // Update the text fields in the edit item area with data from the selected row
+                    inputEditCost.Text = ((string)(((DataRowView)(((DataGrid)sender).SelectedItem)).Row[1]));
+                    inputEditDescription.Text = ((string)(((DataRowView)(((DataGrid)sender).SelectedItem)).Row[2]));
+
+                    // Allow tab stop for edit item text fields if still disabled
+                    inputEditCost.IsTabStop = true;
+                    inputEditDescription.IsTabStop = true;
+
+                    // Disable isReadOnly for edit item text fields if still enabled
+                    inputEditCost.IsReadOnly = false;
+                    inputEditDescription.IsReadOnly = false;
+
+                    // Enable Edit Item button
+                    buttonEditItem.IsEnabled = true;
+
+                    // Enable Delete Item button
+                    buttonDeleteItem.IsEnabled = true;
+                }
+                else // No item is selected
+                {
+                    // Update the text fields in the edit item area to be blank
+                    inputEditCost.Text = "";
+                    inputEditDescription.Text = "";
+
+                    // Disallow tab stop for edit item text fields
+                    inputEditCost.IsTabStop = false;
+                    inputEditDescription.IsTabStop = false;
+
+                    // enable isReadOnly for edit item text fields
+                    inputEditCost.IsReadOnly = true;
+                    inputEditDescription.IsReadOnly = true;
+
+                    // disable edit item button
+                    buttonEditItem.IsEnabled = false;
+
+                    // disable delete item button
+                    buttonDeleteItem.IsEnabled = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -75,12 +141,19 @@ namespace ProjectFinal.Items
         /// </summary>
         private void ButtonAddItem_Click(object sender, RoutedEventArgs e)
         {
-            // TODO
-            // Pass text from area cost and description textboxes to clsItemsLogic.addItem() static method
-                // Be prepared to catch a FormatException and display a System.Windows.MessageBox to inform the user of the issue!
-                // Be prepared to catch an Exception and display a System.Windows.MessageBox to inform the user of the issue!
+            try
+            { 
+                // Pass text from area code, cost and description textboxes to clsItemsLogic.addItem() static method          
+                clsItemsLogic.addItem(inputAddItemCode.Text, inputAddCost.Text, inputAddDescription.Text);
 
-            // Call clsItemsLogic.getItemList() to update itemList
+                // Call clsItemsLogic.getItemList() to update itemList
+                clsItemsLogic.getItemList(ref itemList);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+
         }
 
         /// <summary>
@@ -94,15 +167,30 @@ namespace ProjectFinal.Items
         /// </summary>
         private void ButtonEditItem_Click(object sender, RoutedEventArgs e)
         {
-            // TODO
-            // Display System.Windows.MessageBox to confirm the user wants to process the update
-            // On confirmation
-            // Collect the item that has been selected from the datagrid
-            // Pass text from area cost and description textboxes, and the item selected in the list to clsItemsLogic.updateItem() static method
-                // Be prepared to catch a FormatException and display a System.Windows.MessageBox to inform the user of the issue!
-                // Be prepared to catch an Exception and display a System.Windows.MessageBox to inform the user of the issue!
+            try
+            {
+                // Display MessageBox to confirm the user wants to process the update
+                MessageBoxResult userSelection = MessageBox.Show("Are you sure you want to perform this update?", "Confirm Item Edit", MessageBoxButton.YesNo);
 
-            // Update item list datagrid display with new information
+                // On confirmation
+                if (userSelection == MessageBoxResult.Yes)
+                {
+                    // Collect the item that has been selected from the datagrid
+                    Item originalItem = new Item(((string)(((DataRowView)((listItemDisplay).SelectedItem)).Row[0])), 
+                                                 ((string)(((DataRowView)((listItemDisplay).SelectedItem)).Row[1])), 
+                                                 ((string)(((DataRowView)((listItemDisplay).SelectedItem)).Row[2])));
+
+                    // Pass text from area cost and description textboxes, and the item selected in the list to clsItemsLogic.updateItem() static method
+                    clsItemsLogic.updateItem(inputEditCost.Text, inputEditDescription.Text, originalItem);
+
+                    // Call clsItemsLogic.getItemList() to update itemList
+                    clsItemsLogic.getItemList(ref itemList);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -116,23 +204,59 @@ namespace ProjectFinal.Items
         /// </summary>
         private void ButtonDeleteItem_Click(object sender, RoutedEventArgs e)
         {
-            /// <summary>
-            /// listOfInvoices
-            /// 
-            /// Used to display what invoices a given item is associated with
-            /// </summary>
-            List<string> listOfInvoices = new List<string>();
+            try
+            { 
+                /// <summary>
+                /// listOfInvoices
+                /// 
+                /// Used to display to the user what invoices a given item is associated with
+                /// as an item cannot be deleted if it associated with any invoices.
+                /// </summary>
+                List<string> listOfInvoices = new List<string>();
 
-            // TODO
-            // Display System.Windows.MessageBox to confirm the deletion
-                // On confirmation
-                // Pass listOfInvoices and the selected item to clsItemsLogic.checkForInvoices()
-                    // If listOfInvoices.count is greater than 0
-                        // Display a message box informing the user that invoices exist with that item.
+                // Collect the item that has been selected from the datagrid
+                Item selectedItem = new Item(((string)(((DataRowView)((listItemDisplay).SelectedItem)).Row[0])),
+                                             ((string)(((DataRowView)((listItemDisplay).SelectedItem)).Row[1])),
+                                             ((string)(((DataRowView)((listItemDisplay).SelectedItem)).Row[2])));
+                
+                // Display System.Windows.MessageBox to confirm the deletion
+                MessageBoxResult userSelection = MessageBox.Show("Are you sure you want to delete this item: " + selectedItem.ToString() + "?", "Confirm Item Edit", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                if (userSelection == MessageBoxResult.Yes)
+                {
+                    // On confirmation
+                    // Pass listOfInvoices and the selected item to clsItemsLogic.checkForInvoices() - Check returned value
+                    if (clsItemsLogic.checkForInvoices(ref listOfInvoices, selectedItem))
+                    {
+                        // True = Invoices were found!
+
                         // Use listOfInvoices to display which invoices are involved.
-                    // If listOfinvoices.count is 0
+                        string itemList = listOfInvoices[0];
+                        for(int x = 1; x < listOfInvoices.Count; x++)
+                        {
+                            itemList = itemList + ", " + listOfInvoices[x];
+                        }
+
+                        // Display a message box informing the user that invoices exist with that item.
+                        MessageBox.Show("The following invoices contain the selected item. Unable to delete item unless it is not contained in any invoices.\n" + itemList, "Unable to procede with item deletion!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    }
+                    else
+                    {
+                        // False = No invoices exist. Delete the item
+
                         // Pass item selected in the list to clsItemsLogic.deleteItem()
-                        // Be prepared to catch an Exception and display a System.Windows.MessageBox to inform the user of the issue!
+                        clsItemsLogic.deleteItem(selectedItem);
+
+                        // Call clsItemsLogic.getItemList() to update itemList
+                        clsItemsLogic.getItemList(ref itemList);
+                    }
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -143,9 +267,14 @@ namespace ProjectFinal.Items
         /// </summary>
         private void ButtonExit_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
-            // this.Hide();
-            // Change to Hide() if the main window is set up to close this window when it's on closing event is fired.
+            try
+            { 
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
     }
 }

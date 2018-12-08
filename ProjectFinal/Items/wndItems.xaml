@@ -11,13 +11,15 @@
         <DataGrid HorizontalAlignment="Left" Height="399" Margin="10,10,0,0" VerticalAlignment="Top" Width="361" SelectionChanged="DataGrid_SelectionChanged" Name="listItemDisplay" IsReadOnly="True"/>
         <GroupBox Header="Add Item" HorizontalAlignment="Left" Height="193" Margin="376,35,0,0" VerticalAlignment="Top" Width="406">
             <Grid HorizontalAlignment="Left" Height="157" Margin="10,10,-2,0" VerticalAlignment="Top" Width="386">
-                <TextBox MaxLength="19" HorizontalAlignment="Left" Height="23" Margin="161,10,0,0" TextWrapping="Wrap" Text="$0.00" VerticalAlignment="Top" Width="215" Name="inputAddCost"/>
-                <TextBox MaxLength="50" HorizontalAlignment="Left" Height="23" Margin="161,74,0,0" TextWrapping="Wrap" Text="Item Description" VerticalAlignment="Top" Width="215" Name="inputAddDescription"/>
+                <TextBox MaxLength="19" HorizontalAlignment="Left" Height="23" Margin="161,50,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="215" Name="inputAddCost"/>
+                <TextBox MaxLength="50" HorizontalAlignment="Left" Height="23" Margin="161,82,0,0" TextWrapping="Wrap" Text="Item Description" VerticalAlignment="Top" Width="215" Name="inputAddDescription"/>
                 <Button HorizontalAlignment="Left" Margin="10,125,0,0" VerticalAlignment="Top" Width="366" Name="buttonAddItem" Click="ButtonAddItem_Click">
                     <TextBlock TextWrapping="Wrap" Text="Add New Item"/>
                 </Button>
-                <Label Content="Cost" HorizontalAlignment="Left" Margin="15,6,0,0" VerticalAlignment="Top" Width="146"/>
-                <Label Content="Description" HorizontalAlignment="Left" Margin="15,70,0,0" VerticalAlignment="Top" Width="141"/>
+                <Label Content="Cost" HorizontalAlignment="Left" Margin="15,46,0,0" VerticalAlignment="Top" Width="146"/>
+                <Label Content="Description" HorizontalAlignment="Left" Margin="15,78,0,0" VerticalAlignment="Top" Width="141"/>
+                <TextBox x:Name="inputAddItemCode" HorizontalAlignment="Left" Height="23" Margin="161,18,0,0" TextWrapping="Wrap" Text="CODE" VerticalAlignment="Top" Width="215" MaxLength="4" CharacterCasing="Upper"/>
+                <Label Content="Item Code" HorizontalAlignment="Left" Margin="15,14,0,0" VerticalAlignment="Top"/>
             </Grid>
         </GroupBox>
         <GroupBox Header="Edit Item" HorizontalAlignment="Left" Height="151" Margin="376,233,0,0" VerticalAlignment="Top" Width="406" >
