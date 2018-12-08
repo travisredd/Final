@@ -131,21 +131,5 @@ namespace wndSearch {
                                     MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
-
-        /// <summary>
-        /// Handle the error.
-        /// </summary>
-        /// <param name="sClass">The class in which the error occurred in.</param>
-        /// <param name="sMethod">The method in which the error occurred in.</param>
-        private void HandleError(string sClass, string sMethod, string sMessage) {
-            try {
-                //Would write to a file or database here.
-                MessageBox.Show(sClass + "." + sMethod + " -> " + sMessage);
-            }
-            catch (System.Exception ex) {
-                System.IO.File.AppendAllText("C:\\Error.txt", Environment.NewLine +
-                                             "HandleError Exception: " + ex.Message);
-            }
-        }
     }
 }

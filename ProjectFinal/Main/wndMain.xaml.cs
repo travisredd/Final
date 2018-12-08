@@ -309,7 +309,7 @@ namespace Main
             
             this.Hide();
 
-            MainWindow searchWindow = new MainWindow();
+            wndSearch.wndSearch searchWindow = new wndSearch.wndSearch();
             searchWindow.ShowDialog();
 
             this.Show();
