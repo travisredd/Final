@@ -9,5 +9,6 @@ namespace Main
     public class clsInvoiceItems
     {
         public string sItems { get; set; }
+        public string sCost { get; set; }
     }
 }

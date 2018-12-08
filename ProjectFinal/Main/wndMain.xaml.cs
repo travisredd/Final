@@ -114,7 +114,8 @@ namespace Main
             */
             create_btn.IsEnabled = false;
             editItem_btn.IsEnabled = false;
-
+            addItem_button.IsEnabled = false;
+            delete_btn.IsEnabled = false;
 
         }
         #endregion
@@ -357,6 +358,8 @@ namespace Main
 
         private void testEnterInvoice_Click(object sender, RoutedEventArgs e)
         {
+
+            addItem_button.IsEnabled = true;
             //string s;
             //testing - automatically select an invoice... 
 
@@ -380,9 +383,9 @@ namespace Main
         {
             //add to the list - maybe create a list.
 
-          //  lstInvoiceItems.Add(items_cbo.SelectedItem);
+            //lstInvoiceItems[0].sItems = items_cbo.SelectedItem.ToString();
 
-
+            lstInvoiceItems.Add(new clsInvoiceItems { sItems = items_cbo.SelectedItem.ToString(), sCost = MainLogic.lstItemDesc[items_cbo.SelectedIndex].sCost});
 
             dataGridView1.ItemsSource = lstInvoiceItems;
 
