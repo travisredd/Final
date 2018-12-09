@@ -28,62 +28,11 @@ namespace wndSearch {
         }
 
         /// <summary>
-        /// Used to populate the Invoice ID combo box.
-        /// </summary>
-        /// <returns>A string containing the query to return all invoiceNum.</returns>
-        public string getInvoiceIDList() {
-            try {
-                sSQL = "SELECT InvoiceNum FROM Invoices ORDER BY InvoiceNum";
-
-                return sSQL;
-            }
-            catch (Exception ex) {
-                //Just throw the exception
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
-                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// Used to populate the Invoice Price combo box.
-        /// </summary>
-        /// <returns>A string containing the query to return all invoice costs.</returns>
-        public string getInvoicePriceList() {
-            try {
-                sSQL = "SELECT TotalCost FROM Invoices ORDER BY TotalCost";
-
-                return sSQL;
-            }
-            catch (Exception ex) {
-                //Just throw the exception
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
-                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// Used to populate the Invoice Date combo box.
-        /// </summary>
-        /// <returns>A string containing the query to return all invoice dates.</returns>
-        public string getInvoiceDateList() {
-            try {
-                sSQL = "SELECT InvoiceDate FROM Invoices ORDER BY InvoiceDate";
-
-                return sSQL;
-            }
-            catch (Exception ex) {
-                //Just throw the exception
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
-                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
-            }
-        }
-
-        /// <summary>
         /// Filters datagrid based off the InvoiceID.
         /// </summary>
         /// <param name="invoiceID">InvoiceID to retrieve all data</param>
         /// <returns>A string containing the query to return all invoices filtered by selected Invoice ID.</returns>
-        public string filterDataByInvoiceID(int invoiceID) {
+        public string filterByID(int invoiceID) {
             try {
                 sSQL = "SELECT * FROM Invoices WHERE InvoiceNum = " + invoiceID + " ORDER BY InvoiceNum";
 
@@ -95,15 +44,35 @@ namespace wndSearch {
                                     MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
-        
+
         /// <summary>
-        /// Filters datagrid based off the InvoicePrice.
+        /// Filters datagrid based off the InvoiceID and date
         /// </summary>
-        /// <param name="invoicePrice">InvoicePrice to retrieve all data</param>
-        /// <returns>A string containing the query to return all invoices filtered by selected invoice price.</returns>
-        public string filterDataByInvoicePrice(int invoicePrice) {
+        /// <param name="invoiceID">Invoice ID</param>
+        /// <param name="date">Invoice date to retrieve all data</param>
+        /// <returns>A string containing the query to return all invoices filtered by ID and date</returns>
+        public string filterByIDAndDate(int invoiceID, string date) {
             try {
-                sSQL = "SELECT * FROM Invoices WHERE TotalCost = " + invoicePrice + " ORDER BY InvoiceNum";
+                sSQL = "SELECT * FROM Invoices WHERE InvoiceNum = " + invoiceID + " AND InvoiceDate = #" + date + "# ORDER BY InvoiceNum";
+
+                return sSQL;
+            }
+            catch (Exception ex) {
+                //Just throw the exception
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Filters datagrid based off the InvoiceID and price
+        /// </summary>
+        /// <param name="invoiceID">Invoice ID</param>
+        /// <param name="price">Invoice price to retrieve all data</param>
+        /// <returns>A string containing the query to return all invoices filtered by ID and total cost</returns>
+        public string filterByIDAndPrice(int invoiceID, string price) {
+            try {
+                sSQL = "SELECT * FROM Invoices WHERE InvoiceNum = " + invoiceID + " AND TotalCost = " + price + " ORDER BY InvoiceNum";
 
                 return sSQL;
             }
@@ -117,11 +86,48 @@ namespace wndSearch {
         /// <summary>
         /// Filters datagrid based off the InvoiceDate.
         /// </summary>
-        /// <param name="invoicedate">Invoicedate to retrieve all data</param>
+        /// <param name="date">Invoice date to retrieve all data</param>
         /// <returns>A string containing the query to return all invoices filtered by selected invoice date.</returns>
-        public string filterDataByInvoicedate(int invoicedate) {
+        public string filterByDate(string date) {
             try {
-                sSQL = "SELECT * FROM Invoices WHERE InvoiceDate = " + invoicedate + " ORDER BY InvoiceNum";
+                sSQL = "SELECT * FROM Invoices WHERE InvoiceDate = #" + date + "# ORDER BY InvoiceNum";
+
+                return sSQL;
+            }
+            catch (Exception ex) {
+                //Just throw the exception
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Filters datagrid based off the date and price
+        /// </summary>
+        /// <param name="date">Invoice date to retrieve all data</param>
+        /// <param name="price">Invoice price to retrieve all data</param>
+        /// <returns>A string containing the query to return all invoices filtered by date and total cost</returns>
+        public string filterByDateAndPrice(string date, string price) {
+            try {
+                sSQL = "SELECT * FROM Invoices WHERE InvoiceDate = #" + date + "# AND TotalCost = " + price + " ORDER BY InvoiceNum";
+
+                return sSQL;
+            }
+            catch (Exception ex) {
+                //Just throw the exception
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Filters datagrid based off the InvoicePrice.
+        /// </summary>
+        /// <param name="price">Invoice price to retrieve all data</param>
+        /// <returns>A string containing the query to return all invoices filtered by selected invoice price.</returns>
+        public string filterByPrice(string price) {
+            try {
+                sSQL = "SELECT * FROM Invoices WHERE TotalCost = " + price + " ORDER BY InvoiceNum";
 
                 return sSQL;
             }
