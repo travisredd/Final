@@ -8,6 +8,10 @@ namespace Main
 {
     public class clsInvoiceItems
     {
+
+        public string sItemCode { get; set; }
+
+
         /// <summary>
         /// 
         /// </summary>
