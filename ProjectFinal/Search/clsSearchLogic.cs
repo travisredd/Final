@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Main;
 
-namespace wndSearch {
+namespace Search {
     class clsSearchLogic {
 
         #region Attributes

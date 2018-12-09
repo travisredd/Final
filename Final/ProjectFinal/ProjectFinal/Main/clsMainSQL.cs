@@ -11,22 +11,15 @@ namespace Main
 {
     public class clsMainSQL
     {
-
         #region Variables
-
-
         /// <summary>
         /// Invoice sql statement
         /// </summary>
         string sInvoiceSQL;
-
-
         /// <summary>
         /// ItemDesc sql statement
         /// </summary>
         string sItemDescSQL;
-
-
         /// <summary>
         /// LineItem sql statement
         /// </summary>
@@ -37,27 +30,19 @@ namespace Main
         /// Holds sql statement to delete item in the Invoice table
         /// </summary>
         string sDeleteInvoiceSQL;
-
-
         /// <summary>
         /// Holds sql statement to delete item in the LineItem table
         /// </summary>
         string sDeleteLineItemSQL;
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        string sGetDetailsOfInvoiceSQL;
 
 
         #endregion
 
-
         //Class will be nothing but methods that contain different statements of SQL. 
         //SQL statements needed will be to select different types of data on each window.
         //update/insert/delete data on each form. 
-
 
         #region Constructor
         /// <summary>
@@ -66,38 +51,15 @@ namespace Main
         public clsMainSQL()
         {
 
+
+
+
+
+
+
         }
         #endregion
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="num"></param>
-        /// <returns></returns>
-        public string DeleteLineItemsSQL(int n)
-        {
-            sDeleteLineItemSQL = "DELETE FROM LineItems WHERE InvoiceNum = " + n;
-            return sDeleteLineItemSQL;
-        }
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="num"></param>
-        /// <returns></returns>
-        public string DeleteInvoiceSQL(int n)
-        {
-            sDeleteInvoiceSQL = "DELETE FROM Invoices WHERE InvoiceNum = " + n;
-            return sDeleteInvoiceSQL;
-        }
-
-
-        //create SQL
-
-
-        //update SQL
 
 
         #region LoadInvoiceData()
@@ -113,6 +75,7 @@ namespace Main
         #endregion
 
 
+
         #region LoadLineItems()
         /// <summary>
         /// Returns sql statment to get all LineItems
@@ -124,6 +87,7 @@ namespace Main
             return sLineItemSQL;
         }
         #endregion
+
 
 
         #region LoadItemDescData()
@@ -141,16 +105,36 @@ namespace Main
         #endregion
 
 
-        public string GetDetailsOfInvoice(int n)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="num"></param>
+        /// <returns></returns>
+        public string DeleteInvoiceSQL(int n)
         {
-            //need to query out all the details of the invoice passed in. 
-            sGetDetailsOfInvoiceSQL = " SELECT ItemDesc.ItemDesc, ItemDesc.Cost" +
-                                      " FROM ((ItemDesc " +
-                                      " INNER JOIN LineItems ON LineItems.ItemCode = ItemDesc.ItemCode) " +
-                                      " INNER JOIN Invoices ON Invoices.InvoiceNum = LineItems.InvoiceNum) " +
-                                      " WHERE (Invoices.InvoiceNum = " + n + ")";
-            return sGetDetailsOfInvoiceSQL;
+            sDeleteInvoiceSQL = "DELETE FROM Invoices WHERE InvoiceNum = " + n;
+            return sDeleteInvoiceSQL;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="num"></param>
+        /// <returns></returns>
+        public string DeleteLineItemsSQL(int n)
+        {
+            sDeleteLineItemSQL = "DELETE FROM LineItems WHERE InvoiceNum = " + n;
+            return sDeleteLineItemSQL;
+        }
+        //update SQL
+
+        //create SQL
+
+
+
+
+
 
 
         #region Example
@@ -168,6 +152,5 @@ namespace Main
         }
         */
         #endregion
-
     }
 }

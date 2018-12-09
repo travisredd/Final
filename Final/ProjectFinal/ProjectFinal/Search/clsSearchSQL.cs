@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Search {
+namespace wndSearch {
     class clsSearchSQL {
         private string sSQL;
 
@@ -28,11 +28,62 @@ namespace Search {
         }
 
         /// <summary>
+        /// Used to populate the Invoice ID combo box.
+        /// </summary>
+        /// <returns>A string containing the query to return all invoiceNum.</returns>
+        public string getInvoiceIDList() {
+            try {
+                sSQL = "SELECT InvoiceNum FROM Invoices ORDER BY InvoiceNum";
+
+                return sSQL;
+            }
+            catch (Exception ex) {
+                //Just throw the exception
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Used to populate the Invoice Price combo box.
+        /// </summary>
+        /// <returns>A string containing the query to return all invoice costs.</returns>
+        public string getInvoicePriceList() {
+            try {
+                sSQL = "SELECT TotalCost FROM Invoices ORDER BY TotalCost";
+
+                return sSQL;
+            }
+            catch (Exception ex) {
+                //Just throw the exception
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Used to populate the Invoice Date combo box.
+        /// </summary>
+        /// <returns>A string containing the query to return all invoice dates.</returns>
+        public string getInvoiceDateList() {
+            try {
+                sSQL = "SELECT InvoiceDate FROM Invoices ORDER BY InvoiceDate";
+
+                return sSQL;
+            }
+            catch (Exception ex) {
+                //Just throw the exception
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /// <summary>
         /// Filters datagrid based off the InvoiceID.
         /// </summary>
         /// <param name="invoiceID">InvoiceID to retrieve all data</param>
         /// <returns>A string containing the query to return all invoices filtered by selected Invoice ID.</returns>
-        public string filterByID(int invoiceID) {
+        public string filterDataByInvoiceID(int invoiceID) {
             try {
                 sSQL = "SELECT * FROM Invoices WHERE InvoiceNum = " + invoiceID + " ORDER BY InvoiceNum";
 
@@ -44,35 +95,15 @@ namespace Search {
                                     MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
-
+        
         /// <summary>
-        /// Filters datagrid based off the InvoiceID and date
+        /// Filters datagrid based off the InvoicePrice.
         /// </summary>
-        /// <param name="invoiceID">Invoice ID</param>
-        /// <param name="date">Invoice date to retrieve all data</param>
-        /// <returns>A string containing the query to return all invoices filtered by ID and date</returns>
-        public string filterByIDAndDate(int invoiceID, string date) {
+        /// <param name="invoicePrice">InvoicePrice to retrieve all data</param>
+        /// <returns>A string containing the query to return all invoices filtered by selected invoice price.</returns>
+        public string filterDataByInvoicePrice(int invoicePrice) {
             try {
-                sSQL = "SELECT * FROM Invoices WHERE InvoiceNum = " + invoiceID + " AND InvoiceDate = #" + date + "# ORDER BY InvoiceNum";
-
-                return sSQL;
-            }
-            catch (Exception ex) {
-                //Just throw the exception
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
-                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// Filters datagrid based off the InvoiceID and price
-        /// </summary>
-        /// <param name="invoiceID">Invoice ID</param>
-        /// <param name="price">Invoice price to retrieve all data</param>
-        /// <returns>A string containing the query to return all invoices filtered by ID and total cost</returns>
-        public string filterByIDAndPrice(int invoiceID, string price) {
-            try {
-                sSQL = "SELECT * FROM Invoices WHERE InvoiceNum = " + invoiceID + " AND TotalCost = " + price + " ORDER BY InvoiceNum";
+                sSQL = "SELECT * FROM Invoices WHERE TotalCost = " + invoicePrice + " ORDER BY InvoiceNum";
 
                 return sSQL;
             }
@@ -86,11 +117,11 @@ namespace Search {
         /// <summary>
         /// Filters datagrid based off the InvoiceDate.
         /// </summary>
-        /// <param name="date">Invoice date to retrieve all data</param>
+        /// <param name="invoicedate">Invoicedate to retrieve all data</param>
         /// <returns>A string containing the query to return all invoices filtered by selected invoice date.</returns>
-        public string filterByDate(string date) {
+        public string filterDataByInvoicedate(int invoicedate) {
             try {
-                sSQL = "SELECT * FROM Invoices WHERE InvoiceDate = #" + date + "# ORDER BY InvoiceNum";
+                sSQL = "SELECT * FROM Invoices WHERE InvoiceDate = " + invoicedate + " ORDER BY InvoiceNum";
 
                 return sSQL;
             }
@@ -102,39 +133,18 @@ namespace Search {
         }
 
         /// <summary>
-        /// Filters datagrid based off the date and price
+        /// Handle the error.
         /// </summary>
-        /// <param name="date">Invoice date to retrieve all data</param>
-        /// <param name="price">Invoice price to retrieve all data</param>
-        /// <returns>A string containing the query to return all invoices filtered by date and total cost</returns>
-        public string filterByDateAndPrice(string date, string price) {
+        /// <param name="sClass">The class in which the error occurred in.</param>
+        /// <param name="sMethod">The method in which the error occurred in.</param>
+        private void HandleError(string sClass, string sMethod, string sMessage) {
             try {
-                sSQL = "SELECT * FROM Invoices WHERE InvoiceDate = #" + date + "# AND TotalCost = " + price + " ORDER BY InvoiceNum";
-
-                return sSQL;
+                //Would write to a file or database here.
+                MessageBox.Show(sClass + "." + sMethod + " -> " + sMessage);
             }
-            catch (Exception ex) {
-                //Just throw the exception
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
-                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// Filters datagrid based off the InvoicePrice.
-        /// </summary>
-        /// <param name="price">Invoice price to retrieve all data</param>
-        /// <returns>A string containing the query to return all invoices filtered by selected invoice price.</returns>
-        public string filterByPrice(string price) {
-            try {
-                sSQL = "SELECT * FROM Invoices WHERE TotalCost = " + price + " ORDER BY InvoiceNum";
-
-                return sSQL;
-            }
-            catch (Exception ex) {
-                //Just throw the exception
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
-                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            catch (System.Exception ex) {
+                System.IO.File.AppendAllText("C:\\Error.txt", Environment.NewLine +
+                                             "HandleError Exception: " + ex.Message);
             }
         }
     }

@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Search;
+using wndSearch;
 
 namespace Main
 {
@@ -22,17 +22,18 @@ namespace Main
     /// </summary>
     public partial class wndMain : Window
     {
-
         #region Variables
         /// <summary>
         /// Create MainLogic object reference so that we can use that class in this main window, wndMain class. 
         /// </summary>
         clsMainLogic MainLogic;
 
+
         /// <summary>
         /// Create list object reference to pass a list of our invoices into
         /// </summary>
         List<clsInvoice> newLstInvoice;
+
 
         /// <summary>
         /// 
@@ -44,22 +45,23 @@ namespace Main
         /// </summary>
         List<clsItemDesc> newLstItemDesc;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        List<clsInvoiceItems> lstInvoiceItems;
+
+
+        List<string> lstInvoiceItems;
+
+
+
 
         /// <summary>
         /// 
         /// </summary>
         //bool bIsDeleting;
 
-        bool bAddItem;//delete later
+
+
 
 
         #endregion
-
-
         #region MainWindow() - Constructor
         /// <summary>
         /// MainWindow() - Constructor
@@ -84,19 +86,49 @@ namespace Main
 
             //^^^^^^^^Might not need the new list
 
-            lstInvoiceItems = new List<clsInvoiceItems>();
 
+
+
+            lstInvoiceItems = new List<string>();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            /*
+            //get the lstInvoice from MainLogic and pass it into our new list called newLstInvoice
+            newLstInvoice = MainLogic.GetInvoice();
+
+            //bind the data from our new list onto our datagrid called dataGridView
+            dataGridView1.ItemsSource = newLstInvoice;
+            */
             create_btn.IsEnabled = false;
             editItem_btn.IsEnabled = false;
-            addItem_button.IsEnabled = false;
-            delete_btn.IsEnabled = false;
 
-            items_cbo.IsEnabled = false;
-
-            bAddItem = false;//delete later
 
         }
         #endregion
+
+
+
+
+
+
+
+
+
+
+
 
 
         #region Delete
@@ -107,6 +139,27 @@ namespace Main
         /// <param name="e"></param>
         private void delete_btn_Click(object sender, RoutedEventArgs e)
         {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             /*
             if (dataGridView1.SelectedIndex < newLstInvoice.Count && dataGridView1.SelectedItem != null)
             {
@@ -143,14 +196,27 @@ namespace Main
         }
         #endregion
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void dataGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             /*
             newLstLineItems.Clear();
@@ -173,6 +239,60 @@ namespace Main
 
         }
 
+
+
+
+
+        private void DataGridView2_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            /*
+            newLstItemDesc.Clear();
+            dataGridView3.Items.Refresh();
+            if (dataGridView2.SelectedIndex < newLstLineItems.Count && bIsDeleting == false)
+            {
+                clsLineItems LineItems = new clsLineItems();
+                LineItems = (clsLineItems)dataGridView2.SelectedItem;
+
+                for (int i = 0; i < newLstLineItems.Count; i++)
+                {
+
+                    newLstItemDesc = MainLogic.GetItemDesc(LineItems.sItemCode);
+
+
+                }
+
+                dataGridView3.ItemsSource = newLstItemDesc;
+            }
+            */
+
+        }
+
+
+
         #region Search - MenuItem_Click()
         /// <summary>
         /// Menu -> File -> Search - Opens "search" window
@@ -185,10 +305,10 @@ namespace Main
 
 
             //open "search" window. 
-            wndSearch searchWindow = new wndSearch();
+
             this.Hide();
 
-            
+            MainWindow searchWindow = new MainWindow();
             searchWindow.ShowDialog();
 
             this.Show();
@@ -196,8 +316,6 @@ namespace Main
 
         }
         #endregion
-
-
         #region Item - MenuItem_Click()
         /// <summary>
         /// Menu -> Edit -> Item - Opens "items" window
@@ -216,9 +334,8 @@ namespace Main
 
         #endregion
 
-        private void Create_btn_Click(object sender, RoutedEventArgs e)/***************************Do NOW*******************************/
+        private void Create_btn_Click(object sender, RoutedEventArgs e)
         {
-
             MainLogic.CreateRow();
 
             //user may enter data pertaining to that invoice. 
@@ -230,82 +347,46 @@ namespace Main
             //save invoice, lock data in invoice for viewing only, save all data to database
             //user may choose to edit invoice or delete.
 
-        }/******************************************************************************************Do NOW*********************************************************************************/
 
+        }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void items_cbo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //each combo box change we set the text inside the text box to the MainLogic.ListItemDesc index location of the selected combo box. 
-            itemCost_txtbox.Text = MainLogic.lstItemDesc[items_cbo.SelectedIndex].sCost.ToString();
-
+            itemCost_txtbox.Text = MainLogic.lstItemDesc[items_cbo.SelectedIndex].sCost;
         }
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void testEnterInvoice_Click(object sender, RoutedEventArgs e)//delete - just for testing purposes
+        private void testEnterInvoice_Click(object sender, RoutedEventArgs e)
         {
-            if (bAddItem != true)//delete
+            //string s;
+            //testing - automatically select an invoice... 
+
+            MainLogic.GetInvoice(5000);
+
+            invoiceNum_txtbox.Text = MainLogic.lstInvoice[0].iInvoiceNum.ToString();
+
+            invoiceData_txtbox.Text = MainLogic.lstInvoice[0].sInvoiceDate.ToString();
+
+            invoiceCost_txtbox.Text = MainLogic.lstInvoice[0].sTotalCost.ToString();
+
+            MainLogic.GetItemDesc();
+
+            for (int i = 0; i < MainLogic.lstItemDesc.Count; i++)
             {
-
-                /**************************************Testing - needs to go in another method and called in the constructor - when search sends InvoiceNum, call this**************************************/
-                items_cbo.IsEnabled = true;
-                addItem_button.IsEnabled = true;
-
-                MainLogic.GetInvoice(5000);//move thees to the constructor and pass in the InvoiceNum from "search"
-                newLstItemDesc = MainLogic.GetInvoiceItemDesc(5000);//move thees to the constructor and pass in the InvoiceNum from "search"
-                dataGridView1.ItemsSource = newLstItemDesc;
-
-
-                invoiceNum_txtbox.Text = MainLogic.lstInvoice[0].iInvoiceNum.ToString();
-
-                invoiceData_txtbox.Text = MainLogic.lstInvoice[0].sInvoiceDate.ToString();
-
-                invoiceCost_txtbox.Text = "$" + MainLogic.lstInvoice[0].sTotalCost.ToString();
-
-                MainLogic.GetItemDesc();
-
-                for (int i = 0; i < MainLogic.lstItemDesc.Count; i++)
-                {
-                    items_cbo.Items.Add(MainLogic.lstItemDesc[i].sItemDesc);
-                }
-                /**************************************Testing - needs to go in another method and called in the constructor - when search sends InvoiceNum, call this**************************************/
+                items_cbo.Items.Add(MainLogic.lstItemDesc[i].sItemDesc);
             }
         }
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void addItem_button_Click(object sender, RoutedEventArgs e)
         {
-            bAddItem = true;//delete later
-            //create local var to hold each cost that we retrieve from the newLstItemDescs sCost and convert that string to int while we get the sum of the list.
-            var iTotal = 0;
+            //add to the list - maybe create a list.
 
-            newLstItemDesc.Add(new clsItemDesc { sItemDesc = items_cbo.SelectedItem.ToString(), sCost = MainLogic.lstItemDesc[items_cbo.SelectedIndex].sCost });
-            //bind the data from newLstItemDesc to the datagrid
-            dataGridView1.ItemsSource = newLstItemDesc;
+            lstInvoiceItems.Add(items_cbo.SelectedItem.ToString());
 
-            for (int t = 0; t < newLstItemDesc.Count; t++)
-            {
-                iTotal += int.Parse(newLstItemDesc[t].sCost);
-                //set the text box Invoice Cost to the total added cost items
-                invoiceCost_txtbox.Text = "$" + iTotal.ToString();
-            }
-            //refresh the datagrid
+
+
+            dataGridView1.ItemsSource = lstInvoiceItems;
+
             dataGridView1.Items.Refresh();
-
         }
     }
 }

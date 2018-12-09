@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Main"
         mc:Ignorable="d"
-        Title="wndMain" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+        Title="wndMain" Height="456" Width="800" WindowStartupLocation="CenterScreen">
     <Grid>
         <Menu DockPanel.Dock="Top" Height="20" VerticalAlignment="Top" Width="Auto">
             <MenuItem Header="Search">
@@ -16,20 +16,20 @@
             </MenuItem>
         </Menu>
         <DataGrid x:Name="dataGridView1" HorizontalAlignment="Left" Height="259" Margin="7,116,0,0" VerticalAlignment="Top" Width="772" SelectionChanged="dataGridView_SelectionChanged" Visibility="Visible"/>
-        <Button x:Name="create_btn" Content="New Invoice" HorizontalAlignment="Left" Margin="7,58,0,0" VerticalAlignment="Top" Width="772" Click="Create_btn_Click" />
-        <Button x:Name="editItem_btn" Content="Edit Item" HorizontalAlignment="Left" Margin="17,389,0,0" VerticalAlignment="Top" Width="380"/>
-        <Button x:Name="delete_btn" Content="Delete Item" HorizontalAlignment="Left" Margin="399,389,0,0" VerticalAlignment="Top" Width="380" Click="delete_btn_Click"/>
-        <Label x:Name="invoiceNum_lbl" Content="InvoiceNum:" HorizontalAlignment="Left" Margin="14,26,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="invoiceNum_txtbox" HorizontalAlignment="Left" Height="23" Margin="88,28,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
-        <Label x:Name ="InvoiceDate_lbl"  Content="invoiceDate:" HorizontalAlignment="Left" Margin="236,27,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="invoiceData_txtbox" HorizontalAlignment="Left" Height="23" Margin="309,28,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160" IsReadOnly="True"/>
-        <Label x:Name="invoiceCost_lbl" Content="InvoiceCost:" HorizontalAlignment="Left" Margin="510,27,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="invoiceCost_txtbox" HorizontalAlignment="Left" Height="23" Margin="581,28,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsReadOnly="True" />
+        <Button x:Name="create_btn" Content="New Invoice" HorizontalAlignment="Left" Margin="7,58,0,0" VerticalAlignment="Top" Width="772" Click="Create_btn_Click"/>
+        <Button x:Name="editItem_btn" Content="Edit Item" HorizontalAlignment="Left" Margin="7,389,0,0" VerticalAlignment="Top" Width="382"/>
+        <Button x:Name="delete_btn" Content="Delete Item" HorizontalAlignment="Left" Margin="394,389,0,0" VerticalAlignment="Top" Width="385" Click="delete_btn_Click"/>
+        <Label x:Name="invoiceNum_lbl" Content="InvoiceNum:" HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="invoiceNum_txtbox" HorizontalAlignment="Left" Height="23" Margin="86,27,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="175" IsReadOnly="True"/>
+        <Label x:Name ="InvoiceDate_lbl"  Content="InvoiceDate:" HorizontalAlignment="Left" Margin="279,24,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="invoiceData_txtbox" HorizontalAlignment="Left" Height="23" Margin="354,27,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="175" IsReadOnly="True"/>
+        <Label x:Name="invoiceCost_lbl" Content="InvoiceCost:" HorizontalAlignment="Left" Margin="533,24,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="invoiceCost_txtbox" HorizontalAlignment="Left" Height="23" Margin="607,27,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="175" IsReadOnly="True"/>
         <ComboBox x:Name="items_cbo" HorizontalAlignment="Left" Margin="64,85,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="items_cbo_SelectionChanged"/>
-        <Label x:Name="items_lbl" Content="Items:" HorizontalAlignment="Right" Margin="0,85,726,0" VerticalAlignment="Top" RenderTransformOrigin="1.083,0.103"/>
+        <Label x:Name="items_lbl" Content="Items:" HorizontalAlignment="Right" Margin="0,81,728,0" VerticalAlignment="Top" RenderTransformOrigin="1.083,0.103"/>
         <Button x:Name="addItem_button" Content="Add Item" HorizontalAlignment="Left" Margin="423,85,0,0" VerticalAlignment="Top" Width="75" Click="addItem_button_Click"/>
         <TextBox x:Name="itemCost_txtbox" HorizontalAlignment="Left" Height="23" Margin="279,84,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
-        <Label x:Name="itemCost_lbl" Content="ItemCost:" HorizontalAlignment="Left" Margin="221,85,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="itemCost_lbl" Content="ItemCost:" HorizontalAlignment="Left" Margin="219,82,0,0" VerticalAlignment="Top"/>
         <Button x:Name="testEnterInvoice" Background="#FF00C5FF" Content="Test - Simulates &quot;search&quot; passing InvoiceNum" HorizontalAlignment="Left" Margin="510,85,0,0" VerticalAlignment="Top" Width="269" Click="testEnterInvoice_Click" Height="22" FontWeight="Bold" Foreground="#FF0B0B0C"/>
 
     </Grid>
