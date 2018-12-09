@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace wndSearch {
+namespace Search {
     class clsSearchLogic {
 
         #region Attributes

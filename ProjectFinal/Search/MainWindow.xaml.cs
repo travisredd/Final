@@ -15,11 +15,13 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Search {
+namespace Search
+{
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class wndSearch : Window {
+    public partial class wndSearch : Window
+    {
 
         #region Attributes
 
@@ -39,7 +41,8 @@ namespace Search {
 
         #region Methods
 
-        public wndSearch() {
+        public wndSearch()
+        {
             InitializeComponent();
 
             searchLogic.populateDategrid();
@@ -50,10 +53,12 @@ namespace Search {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void cmdSelect_Click(object sender, RoutedEventArgs e) {
-            try {
+        private void cmdSelect_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
                 // Sets the selected invoice number to the public variable sInvoiceNum.
-                    // This allows other windows to access which invoice was selected.
+                // This allows other windows to access which invoice was selected.
 
                 // Closes the search window.
                 this.Close();
@@ -61,7 +66,8 @@ namespace Search {
                 // Return to the main window.
 
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
                             MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
@@ -72,15 +78,18 @@ namespace Search {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void cmdCancel_Click(object sender, RoutedEventArgs e) {
-            try {
+        private void cmdCancel_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
                 // Closes the search window.
                 this.Close();
 
                 // Return to the main window.
 
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
                             MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
@@ -91,14 +100,17 @@ namespace Search {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void cmboxInvoiceID_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            try {
+        private void cmboxInvoiceID_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
                 // Filters datagrid based off the invoice id selected.
 
                 // Filters the other combo boxes based off the invoice id selected.
-                    // Might be better to lock the other two combo boxes. I will keep this in mind.
+                // Might be better to lock the other two combo boxes. I will keep this in mind.
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
                             MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
@@ -109,14 +121,17 @@ namespace Search {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void cmboxInvoicePrice_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            try {
+        private void cmboxInvoicePrice_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
                 // Filters datagrid based off the invoice price selected.
 
                 // Filters the other combo boxes based off the invoice price selected.
-                    // Might be better to lock the other two combo boxes. I will keep this in mind.
+                // Might be better to lock the other two combo boxes. I will keep this in mind.
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
                             MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
@@ -127,32 +142,38 @@ namespace Search {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void cmboxInvoiceDate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            try {
+        private void cmboxInvoiceDate_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
                 // Filters datagrid based off the invoice date selected.
 
                 // Filters the other comboboxes based off the invoice date selected.
-                    // Might be better to lock the other two combo boxes. I will keep this in mind.
+                // Might be better to lock the other two combo boxes. I will keep this in mind.
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
                             MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
         }
 
-        
+
 
         /// <summary>
         /// Handle the error.
         /// </summary>
         /// <param name="sClass">The class in which the error occurred in.</param>
         /// <param name="sMethod">The method in which the error occurred in.</param>
-        private void HandleError(string sClass, string sMethod, string sMessage) {
-            try {
+        private void HandleError(string sClass, string sMethod, string sMessage)
+        {
+            try
+            {
                 //Would write to a file or database here.
                 MessageBox.Show(sClass + "." + sMethod + " -> " + sMessage);
             }
-            catch (System.Exception ex) {
+            catch (System.Exception ex)
+            {
                 System.IO.File.AppendAllText("C:\\Error.txt", Environment.NewLine +
                                              "HandleError Exception: " + ex.Message);
             }

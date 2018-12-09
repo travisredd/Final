@@ -15,11 +15,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Search {
+namespace wndSearch {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class wndSearch : Window {
+    public partial class MainWindow : Window {
 
         #region Attributes
 
@@ -27,11 +27,31 @@ namespace Search {
         /// Allows other windows to know which invoice was selected by the user.
         /// </summary>
         public string sInvoiceNum;
+        
+        /// <summary>
+        /// Gives public access to the clsDataAccess class.
+        /// </summary>
+        private clsDataAccess db = new clsDataAccess();
+
+        /// <summary>
+        /// Gives public access to the clsSearchSQL class.
+        /// </summary>
+        private clsSearchSQL sql = new clsSearchSQL();
 
         /// <summary>
         /// Gives public access to the clsSearchLogic class.
         /// </summary>
         private clsSearchLogic searchLogic = new clsSearchLogic();
+
+        /// <summary>
+        /// Used for datagrid.
+        /// </summary>
+        private DataTable dt;
+
+        /// <summary>
+        /// Used to hold the data.
+        /// </summary>
+        private DataSet ds;
 
         #endregion
 
@@ -39,10 +59,10 @@ namespace Search {
 
         #region Methods
 
-        public wndSearch() {
+        public MainWindow() {
             InitializeComponent();
 
-            searchLogic.populateDategrid();
+            populateDategrid();
         }
 
         /// <summary>
@@ -140,7 +160,24 @@ namespace Search {
             }
         }
 
-        
+        /// <summary>
+        /// Populates the datagrid.
+        /// </summary>
+        private void populateDategrid() {
+            try {
+                // Get query needed to find invoice.
+
+                // Fill the dt up with the specified data.
+
+                // Fill the datagrid.
+
+            }
+            catch (Exception ex) {
+                //Just throw the exception
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
 
         /// <summary>
         /// Handle the error.
