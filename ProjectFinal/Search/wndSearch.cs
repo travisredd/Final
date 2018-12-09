@@ -14,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using Main;
 namespace Search {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -71,15 +71,18 @@ namespace Search {
         /// <param name="e"></param>
         private void cmdSelect_Click(object sender, RoutedEventArgs e) {
             try {
-
+                
                 // Sets the selected invoice number to the public variable sInvoiceNum.
-                    // This allows other windows to access which invoice was selected.
+                // This allows other windows to access which invoice was selected.
+                
 
                 // Closes the search window.
                 this.Close();
+                
+                
 
                 // Return to the main window.
-
+                
             }
             catch (Exception ex) {
                 HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
