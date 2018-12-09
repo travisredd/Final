@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Main;
 
 namespace Search {
     /// <summary>
@@ -26,7 +27,7 @@ namespace Search {
         /// <summary>
         /// Allows other windows to know which invoice was selected by the user.
         /// </summary>
-        public string sInvoiceNum;
+        public int invoiceNum;
 
         /// <summary>
         /// Gives public access to the clsSearchLogic class.
@@ -71,14 +72,19 @@ namespace Search {
         /// <param name="e"></param>
         private void cmdSelect_Click(object sender, RoutedEventArgs e) {
             try {
+                if(invoiceGrid.SelectedIndex != -1) {
+                    // Used in order to get data from the row selected in the datagridview
+                    DataRowView row = (DataRowView)invoiceGrid.SelectedItem;
 
-                // Sets the selected invoice number to the public variable sInvoiceNum.
-                    // This allows other windows to access which invoice was selected.
+                    // Sets the selected invoice number to the public variable invoiceNum.
+                        // This allows other windows to access which invoice was selected.
+                    invoiceNum = (int)row[0];
 
-                // Closes the search window.
-                this.Close();
+                    // Closes the search window.
+                    this.Close();
 
-                // Return to the main window.
+                    // Return to the main window.
+                }
 
             }
             catch (Exception ex) {
@@ -282,7 +288,8 @@ namespace Search {
         /// </summary>
         private void populateInvoiceID() {
             try {
-                
+                // Clears the Invoice Id combo box
+                cmboxInvoiceID.Items.Clear();
 
                 // Places invoice ID's into the invoice ID combo box
                 for(int i = 0; i < invoiceList.Rows.Count; i++) {
