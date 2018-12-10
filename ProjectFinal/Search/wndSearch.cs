@@ -34,8 +34,25 @@ namespace Search {
         /// </summary>
         private clsSearchLogic searchLogic = new clsSearchLogic();
 
-        
+        /// <summary>
+        /// Used to hold a list of invoices
+        /// </summary>
         private DataTable invoiceList = new DataTable();
+
+        /// <summary>
+        /// Used to hold a list of dates
+        /// </summary>
+        private DataTable dateList = new DataTable();
+
+        /// <summary>
+        /// Used to hold a list of prices
+        /// </summary>
+        private DataTable priceList = new DataTable();
+
+        /// <summary>
+        /// Used to help select a combo box index
+        /// </summary>
+        private bool cmbbxEdit = false;
 
         #endregion
 
@@ -120,29 +137,41 @@ namespace Search {
         /// <param name="e"></param>
         private void cmboxInvoiceID_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             try {
-                if(cmboxInvoiceID.SelectedIndex >= 0) {
+                if(cmboxInvoiceID.SelectedIndex >= 0 && cmbbxEdit == false) {
+                    // Creates variables to be used for populating the data grid and combo boxes
+                    int invoiceID = 0;
+                    string date = "";
+                    string price = "";
+
                     // If neither a date or price is selected
                     if (cmboxInvoiceDate.SelectedIndex == -1 && cmboxInvoicePrice.SelectedIndex == -1) {
-                        // Limit data in the datagridview
-                        populateDataGrid(Int32.Parse(cmboxInvoiceID.SelectedItem.ToString()), "", "");
+                        invoiceID = Int32.Parse(cmboxInvoiceID.SelectedItem.ToString());
+                        date = "";
+                        price = "";
                     } // If a date is selected
                     else if (cmboxInvoiceDate.SelectedIndex != -1 && cmboxInvoicePrice.SelectedIndex == -1) {
-                        // Limit data in the datagridview
-                        populateDataGrid(Int32.Parse(cmboxInvoiceID.SelectedItem.ToString()), cmboxInvoiceDate.SelectedItem.ToString(), "");
+                        invoiceID = Int32.Parse(cmboxInvoiceID.SelectedItem.ToString());
+                        date = cmboxInvoiceDate.SelectedItem.ToString();
+                        price = "";
                     } // If a price is selected 
                     else if (cmboxInvoiceDate.SelectedIndex == -1 && cmboxInvoicePrice.SelectedIndex != -1) {
-                        // Limit data in the datagridview
-                        populateDataGrid(Int32.Parse(cmboxInvoiceID.SelectedItem.ToString()), "", cmboxInvoicePrice.SelectedItem.ToString());
+                        invoiceID = Int32.Parse(cmboxInvoiceID.SelectedItem.ToString());
+                        date = "";
+                        price = cmboxInvoicePrice.SelectedItem.ToString();
                     } // If both a date and price is selected
                     else if (cmboxInvoiceDate.SelectedIndex != -1 && cmboxInvoicePrice.SelectedIndex != -1) {
-                        // Limit data in the datagridview
-                        populateDataGrid(Int32.Parse(cmboxInvoiceID.SelectedItem.ToString()), cmboxInvoiceDate.SelectedItem.ToString(), cmboxInvoicePrice.SelectedItem.ToString());
+                        invoiceID = Int32.Parse(cmboxInvoiceID.SelectedItem.ToString());
+                        date = cmboxInvoiceDate.SelectedItem.ToString();
+                        price = cmboxInvoicePrice.SelectedItem.ToString();
                     }
+
+                    // Populates datagridview
+                    populateDataGrid(invoiceID, date, price);
 
                     // Populates combo boxes
                     populateInvoiceID();
-                    populateInvoiceDate();
-                    populateInvoicePrice();
+                    populateInvoiceDate(invoiceID, date, price);
+                    populateInvoicePrice(invoiceID, date, price);
                 }
             }
             catch (Exception ex) {
@@ -158,29 +187,41 @@ namespace Search {
         /// <param name="e"></param>
         private void cmboxInvoiceDate_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             try {
-                if(cmboxInvoiceDate.SelectedIndex >= 0) {
+                if(cmboxInvoiceDate.SelectedIndex >= 0 && cmbbxEdit == false) {
+                    // Creates variables to be used for populating the data grid and combo boxes
+                    int invoiceID = 0;
+                    string date = "";
+                    string price = "";
+
                     // If neither a ID or price is selected
                     if (cmboxInvoiceID.SelectedIndex == -1 && cmboxInvoicePrice.SelectedIndex == -1) {
-                        // Limit data in the datagridview
-                        populateDataGrid(-1, cmboxInvoiceDate.SelectedItem.ToString(), "");
+                        invoiceID = -1;
+                        date = cmboxInvoiceDate.SelectedItem.ToString();
+                        price = "";
                     } // If a ID is selected
                     else if (cmboxInvoiceID.SelectedIndex != -1 && cmboxInvoicePrice.SelectedIndex == -1) {
-                        // Limit data in the datagridview
-                        populateDataGrid(Int32.Parse(cmboxInvoiceID.SelectedItem.ToString()), cmboxInvoiceDate.SelectedItem.ToString(), "");
+                        invoiceID = Int32.Parse(cmboxInvoiceID.SelectedItem.ToString());
+                        date = cmboxInvoiceDate.SelectedItem.ToString();
+                        price = "";
                     } // If a price is selected 
                     else if (cmboxInvoiceID.SelectedIndex == -1 && cmboxInvoicePrice.SelectedIndex != -1) {
-                        // Limit data in the datagridview
-                        populateDataGrid(-1, cmboxInvoiceDate.SelectedItem.ToString(), cmboxInvoicePrice.SelectedItem.ToString());
+                        invoiceID = -1;
+                        date = cmboxInvoiceDate.SelectedItem.ToString();
+                        price = cmboxInvoicePrice.SelectedItem.ToString();
                     } // If both a ID and price is selected
                     else if (cmboxInvoiceID.SelectedIndex != -1 && cmboxInvoicePrice.SelectedIndex != -1) {
-                        // Limit data in the datagridview
-                        populateDataGrid(Int32.Parse(cmboxInvoiceID.SelectedItem.ToString()), cmboxInvoiceDate.SelectedItem.ToString(), cmboxInvoicePrice.SelectedItem.ToString());
+                        invoiceID = Int32.Parse(cmboxInvoiceID.SelectedItem.ToString());
+                        date = cmboxInvoiceDate.SelectedItem.ToString();
+                        price = cmboxInvoicePrice.SelectedItem.ToString();
                     }
+
+                    // Populates datagridview
+                    populateDataGrid(invoiceID, date, price);
 
                     // Populates combo boxes
                     populateInvoiceID();
-                    populateInvoiceDate();
-                    populateInvoicePrice();
+                    populateInvoiceDate(invoiceID, date, price);
+                    populateInvoicePrice(invoiceID, date, price);
                 }
             }
             catch (Exception ex) {
@@ -196,29 +237,42 @@ namespace Search {
         /// <param name="e"></param>
         private void cmboxInvoicePrice_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             try {
-                if(cmboxInvoicePrice.SelectedIndex >= 0) {
+                if(cmboxInvoicePrice.SelectedIndex >= 0 && cmbbxEdit == false) {
+                    // Creates variables to be used for populating the data grid and combo boxes
+                    int invoiceID = 0;
+                    string date = ""; 
+                    string price = "";
+
+                    // Sets variables used to limit data in the datagridview
                     // If neither an ID or price is selected
                     if (cmboxInvoiceID.SelectedIndex == -1 && cmboxInvoiceDate.SelectedIndex == -1) {
-                        // Limit data in the datagridview
-                        populateDataGrid(-1, "", cmboxInvoicePrice.SelectedItem.ToString());
+                        invoiceID = -1;
+                        date = "";
+                        price = cmboxInvoicePrice.SelectedItem.ToString();
                     } // If an ID is selected
                     else if (cmboxInvoiceID.SelectedIndex != -1 && cmboxInvoiceDate.SelectedIndex == -1) {
-                        // Limit data in the datagridview
-                        populateDataGrid(Int32.Parse(cmboxInvoiceID.SelectedItem.ToString()), "", cmboxInvoicePrice.SelectedItem.ToString());
+                        invoiceID = Int32.Parse(cmboxInvoiceID.SelectedItem.ToString());
+                        date = "";
+                        price = cmboxInvoicePrice.SelectedItem.ToString();
                     } // If a date is selected 
                     else if (cmboxInvoiceID.SelectedIndex == -1 && cmboxInvoiceDate.SelectedIndex != -1) {
-                        // Limit data in the datagridview
-                        populateDataGrid(-1, cmboxInvoiceDate.SelectedItem.ToString(), cmboxInvoicePrice.SelectedItem.ToString());
+                        invoiceID = -1;
+                        date = cmboxInvoiceDate.SelectedItem.ToString();
+                        price = cmboxInvoicePrice.SelectedItem.ToString();
                     } // If both an ID and price is selected
                     else if (cmboxInvoiceID.SelectedIndex != -1 && cmboxInvoiceDate.SelectedIndex != -1) {
-                        // Limit data in the datagridview
-                        populateDataGrid(Int32.Parse(cmboxInvoiceID.SelectedItem.ToString()), cmboxInvoiceDate.SelectedItem.ToString(), cmboxInvoicePrice.SelectedItem.ToString());
-                    }
+                        invoiceID = Int32.Parse(cmboxInvoiceID.SelectedItem.ToString());
+                        date = cmboxInvoiceDate.SelectedItem.ToString();
+                        price = cmboxInvoicePrice.SelectedItem.ToString();
+                    } 
+
+                    // Populates datagridview
+                    populateDataGrid(invoiceID, date, price);
 
                     // Populates combo boxes
                     populateInvoiceID();
-                    populateInvoiceDate();
-                    populateInvoicePrice();
+                    populateInvoiceDate(invoiceID, date, price);
+                    populateInvoicePrice(invoiceID, date, price);
                 }
             }
             catch (Exception ex) {
@@ -267,9 +321,6 @@ namespace Search {
         /// <param name="price"></param>
         private void populateDataGrid(int invoiceID, string date, string price) {
             try {
-                // Clears the Invoice ID combo box
-                cmboxInvoiceID.Items.Clear();
-
                 // Populates invoiceList
                 searchLogic.getInvoices(ref invoiceList, invoiceID, date, price);
 
@@ -288,12 +339,32 @@ namespace Search {
         /// </summary>
         private void populateInvoiceID() {
             try {
-                // Clears the Invoice Id combo box
-                cmboxInvoiceID.Items.Clear();
+                // Only runs if cmboxInvoiceID has a selection
+                if(cmboxInvoiceID.SelectedIndex >= 0) {
+                    // Holds the value of the selected item
+                    int invoiceNum = Int32.Parse(cmboxInvoiceID.SelectedItem.ToString());
 
-                // Places invoice ID's into the invoice ID combo box
-                for(int i = 0; i < invoiceList.Rows.Count; i++) {
-                    cmboxInvoiceID.Items.Add(invoiceList.Rows[i][0].ToString());
+                    // Clears the Invoice Id combo box
+                    cmboxInvoiceID.Items.Clear();
+
+                    // Places invoice ID's into the invoice ID combo box
+                    for (int i = 0; i < invoiceList.Rows.Count; i++) {
+                        cmboxInvoiceID.Items.Add(invoiceList.Rows[i][0].ToString());
+
+                        if ((int)invoiceList.Rows[i][0] == invoiceNum) {
+                            cmbbxEdit = true;
+                            cmboxInvoiceID.SelectedIndex = i;   
+                            cmbbxEdit = false;                         
+                        }
+                    }
+                } else {
+                    // Clears the Invoice Id combo box
+                    cmboxInvoiceID.Items.Clear();
+
+                    // Places invoice ID's into the invoice ID combo box
+                    for (int i = 0; i < invoiceList.Rows.Count; i++) {
+                        cmboxInvoiceID.Items.Add(invoiceList.Rows[i][0].ToString());
+                    }
                 }
             }
             catch (Exception ex) {
@@ -307,13 +378,60 @@ namespace Search {
         /// Populates the invoice date combo box
         /// </summary>
         private void populateInvoiceDate() {
-            try {
-                // Clears the Invoice date combo box
-                cmboxInvoiceDate.Items.Clear();
+            // Clears the Invoice date combo box
+            cmboxInvoiceDate.Items.Clear();
 
-                // Places invoice dates into the invoice date combo box
-                for(int i = 0; i < invoiceList.Rows.Count; i++) {
-                    cmboxInvoiceDate.Items.Add(invoiceList.Rows[i][1].ToString());
+            // Creates column names and adds it to the datagridview
+            DataColumn date = new DataColumn("Date", typeof(string));
+            
+            dateList.Columns.Add(date);
+
+            // Populates dateList
+            searchLogic.getListOfDates(ref dateList);
+
+            // Places invoice dates into the invoice date combo box
+            for (int i = 0; i < dateList.Rows.Count; i++) {
+                cmboxInvoiceDate.Items.Add(dateList.Rows[i][0].ToString());
+            }
+        }
+
+        /// <summary>
+        /// Populates the invoice date combo box
+        /// </summary>
+        private void populateInvoiceDate(int invoiceID, string date, string price) {
+            try {
+                // Only runs if cmboxInvoiceDate has a selection
+                if(cmboxInvoiceDate.SelectedIndex >= 0) {
+                    // Holds the value of the selected item
+                    string invoiceDate = cmboxInvoiceDate.SelectedItem.ToString();
+
+                    // Clears the Invoice Date combo box
+                    cmboxInvoiceDate.Items.Clear();
+
+                    // Populate dateList
+                    searchLogic.getListOfDates(ref dateList, invoiceID, date, price);
+
+                    // Places invoice dates into the invoice date combo box
+                    for(int i = 0; i < dateList.Rows.Count; i++) {
+                        cmboxInvoiceDate.Items.Add(dateList.Rows[i][0].ToString());
+
+                        if(dateList.Rows[i][0].ToString() == invoiceDate) {
+                            cmbbxEdit = true;
+                            cmboxInvoiceDate.SelectedIndex = i;
+                            cmbbxEdit = false;
+                        }
+                    }
+                } else {
+                    // Clears the Invoice date combo box
+                    cmboxInvoiceDate.Items.Clear();
+
+                    // Populate dateList
+                    searchLogic.getListOfDates(ref dateList, invoiceID, date, price);
+
+                    // Places invoice dates into the invoice date combo box
+                    for (int i = 0; i < dateList.Rows.Count; i++) {
+                        cmboxInvoiceDate.Items.Add(dateList.Rows[i][0].ToString());
+                    }
                 }
             }
             catch (Exception ex) {
@@ -327,13 +445,59 @@ namespace Search {
         /// Populates the invoice price combo box
         /// </summary>
         private void populateInvoicePrice() {
-            try {
-                // Clears the Invoice Price combo box
-                cmboxInvoicePrice.Items.Clear();
+            // Clears the Invoice Price combo box
+            cmboxInvoicePrice.Items.Clear();
 
-                // Places invoice prices into the invoice price combo box
-                for(int i = 0; i < invoiceList.Rows.Count; i++) {
-                    cmboxInvoicePrice.Items.Add(invoiceList.Rows[i][2].ToString());
+            // Creates column names and adds it to the datagridview
+            DataColumn price = new DataColumn("Price", typeof(string));
+            
+            priceList.Columns.Add(price);
+
+            // Populates priceList
+            searchLogic.getListOfPrices(ref priceList);
+
+            // Places invoice prices into the invoice price combo box
+            for (int i = 0; i < priceList.Rows.Count; i++) {
+                cmboxInvoicePrice.Items.Add(priceList.Rows[i][0].ToString());
+            }
+        }
+
+        /// <summary>
+        /// Populates the invoice price combo box
+        /// </summary>
+        private void populateInvoicePrice(int invoiceID, string date, string price) {
+            try {
+                if(cmboxInvoicePrice.SelectedIndex >= 0) {
+                    // Holds the value of the selected item
+                    string invoicePrice = cmboxInvoicePrice.SelectedItem.ToString();
+
+                    // Clears the Invoice Price combo box
+                    cmboxInvoicePrice.Items.Clear();
+
+                    // Populate priceList
+                    searchLogic.getListOfPrices(ref priceList, invoiceID, date, price);
+
+                    // Places invoice prices into the invoice price combo box
+                    for (int i = 0; i < priceList.Rows.Count; i++) {
+                        cmboxInvoicePrice.Items.Add(priceList.Rows[i][0].ToString());
+
+                        if (priceList.Rows[i][0].ToString() == invoicePrice) {
+                            cmbbxEdit = true;
+                            cmboxInvoicePrice.SelectedIndex = i;
+                            cmbbxEdit = false;
+                        }
+                    }
+                } else {
+                    // Clears the Invoice Price combo box
+                    cmboxInvoicePrice.Items.Clear();
+
+                    // Populates priceList
+                    searchLogic.getListOfPrices(ref priceList, invoiceID, date, price);
+
+                    // Places invoice prices into the invoice price combo box
+                    for (int i = 0; i < priceList.Rows.Count; i++) {
+                        cmboxInvoicePrice.Items.Add(priceList.Rows[i][0].ToString());
+                    }
                 }
             }
             catch (Exception ex) {
